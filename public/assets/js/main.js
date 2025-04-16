@@ -11,6 +11,9 @@ const sendMessage = async (event) => {
   messagesContainer.innerHTML += `<div class="chat__message chat__message--user">${userMessage}</div>`;
   inputText.value = '';
 
+  messagesContainer.innerHTML += `<div class="chat__message chat__message--bot chat__message--typing">Typing...</div>`;
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
   try {
     // const response = await fetch('http://localhost/api/chatbot:3000');
     const response = await fetch('/api/chatbot', {
@@ -23,6 +26,7 @@ const sendMessage = async (event) => {
     });
 
     const data = await response.json();
+    document.querySelector('.chat__message--typing').remove();
     messagesContainer.innerHTML += `<div class="chat__message chat__message--bot">${data.reply}</div>`;
   } catch (error) {
     console.error('Error:', error);
